@@ -17,3 +17,7 @@ class Groupservice:
         db.session.commit()
 
         return new_group
+    
+    @staticmethod
+    def isvalid(group_name):
+        return Group.query.filter_by(group=group_name).first()

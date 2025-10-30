@@ -26,5 +26,5 @@ def add_group():
         return jsonify({"error": str(ve)}), 400
 
     except Exception as e:
-        db.session.rollback()
+        # db.session.rollback()
         return jsonify({"error": str(e)}), 500
