@@ -1,0 +1,43 @@
+Parsed JSON data from SigNoz:
+{
+  "receiver": "Custom Alert-Flask",
+  "status": "firing",
+  "alerts": [
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "Test Laravel Alert",
+        "ruleId": "019a04f9-940d-7022-8fcc-16ace1a0aad2",
+        "ruleSource": "http://10.104.10.140:8080/alerts/edit?ruleId=019a04f9-940d-7022-8fcc-16ace1a0aad2",
+        "severity": "critical",
+        "threshold.name": "critical"
+      },
+      "annotations": {
+        "description": "This alert is fired when the defined metric (current value: 59 op/s) crosses the threshold (20 op/s)",
+        "summary": "The rule threshold is set to 20 op/s, and the observed metric value is 59 op/s"
+      },
+      "startsAt": "2025-10-29T08:39:29.378799398Z",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "http://10.104.10.140:8080/alerts/edit?ruleId=019a04f9-940d-7022-8fcc-16ace1a0aad2",
+      "fingerprint": "85b9bb2f2a1c9c4c"
+    }
+  ],
+  "groupLabels": {
+    "alertname": "Test Laravel Alert"
+  },
+  "commonLabels": {
+    "alertname": "Test Laravel Alert",
+    "ruleId": "019a04f9-940d-7022-8fcc-16ace1a0aad2",
+    "ruleSource": "http://10.104.10.140:8080/alerts/edit?ruleId=019a04f9-940d-7022-8fcc-16ace1a0aad2",
+    "severity": "critical",
+    "threshold.name": "critical"
+  },
+  "commonAnnotations": {
+    "description": "This alert is fired when the defined metric (current value: 59 op/s) crosses the threshold (20 op/s)",
+    "summary": "The rule threshold is set to 20 op/s, and the observed metric value is 59 op/s"
+  },
+  "externalURL": "http://localhost:8080",
+  "version": "4",
+  "groupKey": "{}/{ruleId=~\"-1|019a04f9-940d-7022-8fcc-16ace1a0aad2\"}:{alertname=\"Test Laravel Alert\"}",
+  "truncatedAlerts": 0
+}
