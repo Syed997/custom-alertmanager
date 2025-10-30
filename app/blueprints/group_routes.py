@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from app.extensions import db
 from app.models.group import Group
+from app.services.group_services import Groupservice
 
 group_bp = Blueprint('group_bp', __name__)
 
@@ -12,16 +13,17 @@ def add_group():
         print("No JSON data received!")
         return jsonify({"status": "error", "message": "provide group name!"}), 400
     
-    group_name = data.get('group')
-    new_group = Group(group=group_name)
     try:
-        db.session.add(new_group)
-        db.session.commit()
+        group = Groupservice.create_group(data)
+
         return jsonify({
             "message": "Group created successfully!",
-            "id": new_group.id,
-            "group": new_group.group
+            "id": group.id,
+            "group": group.group
         }), 201
+    
+    except ValueError as ve:
+        return jsonify({"error": str(ve)}), 400
 
     except Exception as e:
         db.session.rollback()
