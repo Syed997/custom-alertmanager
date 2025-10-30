@@ -1,5 +1,5 @@
 from flask import Flask
-from app.blueprints.routes import alert_bp
+from app.blueprints.alet_routes import alert_bp
 from app.extensions import db
 from config import DevConfig
 
