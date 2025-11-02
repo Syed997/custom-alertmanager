@@ -1,12 +1,14 @@
 from flask import Blueprint, request, jsonify
 from app.utils.data_process import process_alert_data
-from app.services.teamsnotification import send_teams_alert
+from app.services.alert_generate import send_teams_alert, send_email_alert
 import json
+from app.services.group_services import Groupservice
+from app.services.member_services import Memberservices
 
 alert_bp = Blueprint('alert_bp', __name__)
 
-@alert_bp.route('/', methods=['POST'])
-def alert():
+@alert_bp.route('/teams', methods=['POST'])
+def alert_teams():
     # raw_data = request.get_data(as_text=True)
     # print("Raw incoming data from SigNoz:")
     # print(raw_data)
@@ -26,6 +28,37 @@ def alert():
         alert_message = 'No data provided'
 
     success = send_teams_alert(alert_message)
+
+    if success:
+        return jsonify({"status": "success", "message": "Alert sent to Teams"}), 200
+    else:
+        return jsonify({"status": "error", "message": "Failed to send alert"}), 500
+    
+
+@alert_bp.route('/<string:group>', methods=['GET'])
+def alert(group):
+    group_id = Groupservice.isvalid(group).id
+
+    if not group_id:
+        return jsonify({"error": "group does not exist."}), 400
+    
+    mails = Memberservices.get_mail(group_id)
+    # numbers = Memberservices.get_number(group_id)
+
+    data = request.get_json()
+    if data:
+        print("Parsed JSON data from SigNoz:")
+        print(json.dumps(data, indent=2))
+        print("-" * 50)
+        
+        # Process the data and generate the alert message
+        alert_message = process_alert_data(data)
+        
+    else:
+        print("No JSON data received – check Content-Type header.")
+        alert_message = 'No data provided'
+
+    success = send_email_alert(alert_message, mails)
 
     if success:
         return jsonify({"status": "success", "message": "Alert sent to Teams"}), 200

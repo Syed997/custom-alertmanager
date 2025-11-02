@@ -37,3 +37,13 @@ class Memberservices:
             })
 
         return result
+
+    @staticmethod
+    def get_mail(group_id):
+        mails = [member.mail for member in Member.query.filter_by(group_id=group_id).all()]
+        return mails
+    
+    @staticmethod
+    def get_number(group_id):
+        numbers = [member.m_number for member in Member.query.filter_by(group_id=group_id).all()]
+        return numbers
