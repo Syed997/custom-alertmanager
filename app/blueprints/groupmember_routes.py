@@ -24,6 +24,32 @@ def addmember():
         return jsonify({"error": str(e)}), 400
     
 
+@groupmember_bp.route('/<int:member_id>', methods=['PUT'])
+def update_member(member_id):
+    data = request.get_json()
+    try:
+        member = Memberservices.update_member(member_id, data)
+        return jsonify({
+            "id": member.id,
+            "name": member.name,
+            "mail": member.mail,
+            "mobile": member.m_number,
+            "group_id": member.group_id
+        })
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+
+
+@groupmember_bp.route('/<int:member_id>', methods=['DELETE'])
+def delete_member(member_id):
+    try:
+        result = Memberservices.delete_member(member_id)
+        return jsonify(result)
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+
+
+
 @groupmember_bp.route('/')
 def fetchmembers():
     members = Memberservices.get_all_members()
