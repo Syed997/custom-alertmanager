@@ -4,19 +4,19 @@ const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000/api";
 
 const AddMember = ({ onSuccess }) => {
   const [formData, setFormData] = useState({
-    group_id: "",
+    group: "",
     name: "",
     mail: "",
-    m_number: "",
+    mobile: "",
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (
-      !formData.group_id ||
+      !formData.group ||
       !formData.name ||
       !formData.mail ||
-      !formData.m_number
+      !formData.mobile
     )
       return;
 
@@ -28,7 +28,7 @@ const AddMember = ({ onSuccess }) => {
       });
       if (res.ok) {
         alert("Member added successfully!");
-        setFormData({ group_id: "", name: "", mail: "", m_number: "" });
+        setFormData({ group: "", name: "", mail: "", mobile: "" });
         onSuccess();
       } else {
         const error = await res.json();
@@ -49,10 +49,10 @@ const AddMember = ({ onSuccess }) => {
   return (
     <form onSubmit={handleSubmit}>
       <input
-        type="number"
-        name="group_id"
-        placeholder="Group ID"
-        value={formData.group_id}
+        type="text"
+        name="group"
+        placeholder="Group Name"
+        value={formData.group}
         onChange={handleChange}
         required
       />
@@ -74,9 +74,9 @@ const AddMember = ({ onSuccess }) => {
       />
       <input
         type="text"
-        name="m_number"
+        name="mobile"
         placeholder="Mobile Number"
-        value={formData.m_number}
+        value={formData.mobile}
         onChange={handleChange}
         required
       />
