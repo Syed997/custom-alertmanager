@@ -28,3 +28,10 @@ def add_group():
     except Exception as e:
         # db.session.rollback()
         return jsonify({"error": str(e)}), 500
+    
+
+
+@group_bp.route('/')
+def grouplists():
+    groups = Groupservice.get_all_groups()
+    return jsonify(groups), 200

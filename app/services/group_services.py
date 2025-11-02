@@ -21,3 +21,16 @@ class Groupservice:
     @staticmethod
     def isvalid(group_name):
         return Group.query.filter_by(group=group_name).first()
+    
+
+    @staticmethod
+    def get_all_groups():
+        groups = Group.query.all()
+        result = []
+        for group in groups:
+            result.append({
+                "id": group.id,
+                "group": group.group
+            })
+
+        return result
