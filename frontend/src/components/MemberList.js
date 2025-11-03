@@ -47,6 +47,10 @@ const MemberList = ({ groups, onUpdate }) => {
                   />
                 ) : (
                   <>
+                    <span className="name">{member.name}</span>
+                    <span className="mail">{member.mail}</span>
+                    <span className="mobile">{member.mobile}</span>{" "}
+                    {/* Fixed: Use "mobile" */}
                     <div className="icons">
                       <button
                         className="edit-btn"
@@ -61,10 +65,6 @@ const MemberList = ({ groups, onUpdate }) => {
                         Delete
                       </button>
                     </div>
-                    <span className="name">{member.name}</span>
-                    <span className="mail">{member.mail}</span>
-                    <span className="mobile">{member.mobile}</span>{" "}
-                    {/* Fixed: Use "mobile" */}
                   </>
                 )}
               </div>
