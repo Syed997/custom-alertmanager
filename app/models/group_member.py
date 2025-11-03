@@ -4,10 +4,10 @@ class Member(db.Model):
     __tablename__ = 'members'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), nullable=False)
-    mail = db.Column(db.String(30), nullable=False, unique=False)
+    name = db.Column(db.String(30), nullable=False)
+    mail = db.Column(db.String(50), nullable=False, unique=False)
     # TODO: need to convert this into string (large number throw error)
-    m_number = db.Column(db.Integer, nullable=False, unique=False)
+    m_number = db.Column(db.String(14), nullable=False, unique=False)
     group_id = db.Column(db.Integer, db.ForeignKey('groups.id'), nullable=False)
 
     group = db.relationship('Group', backref=db.backref('users', lazy=True))

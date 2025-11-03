@@ -12,8 +12,8 @@ def create_app(config_class=DevConfig):
     app.config.from_object(config_class)
     db.init_app(app)
 
-    CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
-
+    # CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+    CORS(app)
     app.register_blueprint(alert_bp, url_prefix='/alert')
     app.register_blueprint(group_bp, url_prefix='/groups')
     app.register_blueprint(groupmember_bp, url_prefix='/members')

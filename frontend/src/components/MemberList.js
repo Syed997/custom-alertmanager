@@ -47,9 +47,9 @@ const MemberList = ({ groups, onUpdate }) => {
                   />
                 ) : (
                   <>
-                    <span className="name">{member.name}</span>
-                    <span className="mail">{member.mail}</span>
-                    <span className="mobile">{member.mobile}</span>{" "}
+                    <span className="name">Name: { member.name}</span>
+                    <span className="mail">Mail: {member.mail}</span>
+                    <span className="mobile">Mobile: {member.mobile}</span>{" "}
                     {/* Fixed: Use "mobile" */}
                     <div className="icons">
                       <button
