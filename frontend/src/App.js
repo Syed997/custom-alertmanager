@@ -4,7 +4,7 @@ import AddGroup from "./components/AddGroup";
 import AddMember from "./components/AddMember";
 import MemberList from "./components/MemberList";
 
-const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000/api";
+const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:6000/api";
 
 function App() {
   const [groups, setGroups] = useState([]);
