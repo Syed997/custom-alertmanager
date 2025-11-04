@@ -52,7 +52,7 @@ def delete_member(member_id):
 
 
 @groupmember_bp.route('/')
-@jwt_required()
+# @jwt_required()
 def fetchmembers():
     members = Memberservices.get_all_members()
     return jsonify(members), 200
