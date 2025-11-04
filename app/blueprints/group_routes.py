@@ -2,10 +2,12 @@ from flask import Blueprint, request, jsonify
 from app.extensions import db
 from app.models.group import Group
 from app.services.group_services import Groupservice
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 group_bp = Blueprint('group_bp', __name__)
 
 @group_bp.route('/add', methods=['POST'])
+@jwt_required()
 def add_group():
     data = request.get_json()
 
@@ -28,3 +30,11 @@ def add_group():
     except Exception as e:
         # db.session.rollback()
         return jsonify({"error": str(e)}), 500
+    
+
+
+@group_bp.route('/')
+@jwt_required()
+def grouplists():
+    groups = Groupservice.get_all_groups()
+    return jsonify(groups), 200

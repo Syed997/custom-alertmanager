@@ -1,9 +1,11 @@
 from flask import Blueprint, request, jsonify
 from app.services.member_services import Memberservices
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 groupmember_bp = Blueprint('groupmember_bp', __name__)
 
 @groupmember_bp.route('/add', methods=['POST'])
+@jwt_required()
 def addmember():
     data = request.get_json()
     print(data)
@@ -25,6 +27,7 @@ def addmember():
     
 
 @groupmember_bp.route('/<int:member_id>', methods=['PUT'])
+@jwt_required()
 def update_member(member_id):
     data = request.get_json()
     try:
@@ -41,6 +44,7 @@ def update_member(member_id):
 
 
 @groupmember_bp.route('/<int:member_id>', methods=['DELETE'])
+@jwt_required()
 def delete_member(member_id):
     try:
         result = Memberservices.delete_member(member_id)
@@ -51,6 +55,7 @@ def delete_member(member_id):
 
 
 @groupmember_bp.route('/')
+@jwt_required()
 def fetchmembers():
     members = Memberservices.get_all_members()
     return jsonify(members), 200
