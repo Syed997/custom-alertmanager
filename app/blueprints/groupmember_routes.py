@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from app.services.member_services import Memberservices
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 groupmember_bp = Blueprint('groupmember_bp', __name__)
 
@@ -51,6 +52,7 @@ def delete_member(member_id):
 
 
 @groupmember_bp.route('/')
+@jwt_required()
 def fetchmembers():
     members = Memberservices.get_all_members()
     return jsonify(members), 200

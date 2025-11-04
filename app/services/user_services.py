@@ -29,3 +29,9 @@ class Userservice():
             })
 
         return result
+    
+    @staticmethod
+    def is_userexist(mail):
+        user = User.query.filter_by(mail=mail).first()
+
+        return user
