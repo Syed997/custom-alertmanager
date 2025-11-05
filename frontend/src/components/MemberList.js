@@ -8,7 +8,7 @@ const MemberList = ({ groups, onUpdate }) => {
     if (!window.confirm("Are you sure you want to delete this member?")) return;
 
     const API_BASE =
-      process.env.REACT_APP_API_BASE || "http://localhost:5000/api";
+      process.env.REACT_APP_API_BASE || "http://localhost:5000";
 
     try {
       const res = await fetch(`${API_BASE}/members/${memberId}`, {
