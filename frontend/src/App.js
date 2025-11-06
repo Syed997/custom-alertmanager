@@ -17,14 +17,17 @@ function App() {
   // Check if user is already logged in
   useEffect(() => {
     const token = localStorage.getItem("access_token");
-    if (token) {
+    
+    if(token && token !== undefined){
       setIsAuthenticated(true);
+    }else{
+      setIsAuthenticated(false);
     }
   }, []);
 
   const loadData = async () => {
     const token = localStorage.getItem("access_token");
-    if (!token) {
+    if (!token || token === undefined) {
       console.error("No token found");
       return;
     }

@@ -10,7 +10,7 @@ def sign_up():
     data = request.get_json()
 
     if not data or not data['mail'] or not data['password']:
-        return jsonify({"error": "give username and password"}), 400
+        return jsonify({"error": "give username and password"}), 401
     
     #TODO: check if the user exist
     
@@ -35,9 +35,9 @@ def login():
     data = request.get_json()
     user = Userservice.is_userexist(data['mail'])
     if not user:
-        return jsonify({"unautorized": "user does not exist"}), 201
+        return jsonify({"unautorized": "user does not exist"}), 401
     if not bcrypt.check_password_hash(user.password, data['password']):
-        return jsonify({"unautorized": "invalid password"}), 201
+        return jsonify({"unautorized": "invalid password"}), 401
     
     access_token = create_access_token(identity=str(user.id))
 
