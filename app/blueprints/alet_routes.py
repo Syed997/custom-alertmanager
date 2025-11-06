@@ -35,7 +35,7 @@ def alert_teams():
         return jsonify({"status": "error", "message": "Failed to send alert"}), 500
     
 
-@alert_bp.route('/<string:group>', methods=['GET'])
+@alert_bp.route('/<string:group>', methods=['POST'])
 def alert(group):
     group_id = Groupservice.isvalid(group).id
 
@@ -57,10 +57,10 @@ def alert(group):
     else:
         print("No JSON data received – check Content-Type header.")
         alert_message = 'No data provided'
-
+    
     success = send_email_alert(alert_message, mails)
 
     if success:
-        return jsonify({"status": "success", "message": "Alert sent to Teams"}), 200
+        return jsonify({"status": "success", "message": "Alert sent to Mails"}), 200
     else:
         return jsonify({"status": "error", "message": "Failed to send alert"}), 500

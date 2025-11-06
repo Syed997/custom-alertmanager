@@ -13,7 +13,7 @@ SENDER_EMAIL = os.getenv("SENDER_EMAIL")
 def send_teams_alert(message):
     """Send alert to Microsoft Teams via webhook"""
     payload = {
-        "text": f"🚨 Alert from Flask API SigNoz:\n\n{message}"
+        "text": f"Alert from Flask API SigNoz:\n\n{message}"
     }
     headers = {"Content-Type": "application/json"}
     response = requests.post(TEAMS_WEBHOOK_URL, json=payload, headers=headers)
@@ -23,7 +23,7 @@ def send_teams_alert(message):
 def send_email_alert(message, recipients):
     """Send alert via email using SMTP"""
     try:
-        subject = "🚨 Alert from Flask API SigNoz"
+        subject = "Alert from Flask API SigNoz"
         body = f"{message}"
 
         # Create the email
@@ -37,9 +37,9 @@ def send_email_alert(message, recipients):
             # server.login(os.getenv("SMTP_USER"), os.getenv("SMTP_PASS"))
             server.sendmail(SENDER_EMAIL, recipients, msg.as_string())
 
-        print(f"✅ Email sent successfully to: {', '.join(recipients)}")
+        print(f"Email sent successfully to: {', '.join(recipients)}")
         return True
 
     except Exception as e:
-        print(f"❌ Failed to send email: {e}")
+        print(f"Failed to send email: {e}")
         return False
