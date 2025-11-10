@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000/api";
+const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
 
 const AddMember = ({ onSuccess }) => {
   const [formData, setFormData] = useState({
@@ -21,9 +21,13 @@ const AddMember = ({ onSuccess }) => {
       return;
 
     try {
+      const token = localStorage.getItem("access_token");
       const res = await fetch(`${API_BASE}/members/add`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
         body: JSON.stringify(formData),
       });
       if (res.ok) {

@@ -8,11 +8,16 @@ const MemberList = ({ groups, onUpdate }) => {
     if (!window.confirm("Are you sure you want to delete this member?")) return;
 
     const API_BASE =
-      process.env.REACT_APP_API_BASE || "http://localhost:5000/api";
+      process.env.REACT_APP_API_BASE || "http://localhost:5000";
 
     try {
+      const token = localStorage.getItem("access_token");
       const res = await fetch(`${API_BASE}/members/${memberId}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
       });
       if (res.ok) {
         alert("Member deleted successfully!");

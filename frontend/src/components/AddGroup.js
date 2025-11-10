@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000/api";
+const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
 
 const AddGroup = ({ onSuccess }) => {
   const [groupName, setGroupName] = useState("");
@@ -9,10 +9,17 @@ const AddGroup = ({ onSuccess }) => {
     e.preventDefault();
     if (!groupName) return;
 
+    // const token = localStorage.getItem("access_token");
+    // console.log("Using token:", token);
     try {
+      const token = localStorage.getItem("access_token");
+      console.log("Using token:", token);
       const res = await fetch(`${API_BASE}/groups/add`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
         body: JSON.stringify({ group: groupName }),
       });
       if (res.ok) {

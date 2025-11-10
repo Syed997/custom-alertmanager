@@ -5,3 +5,4 @@ python-dotenv
 requests
 Flask_Bcrypt
 Flask_JWT_Extended
+redis

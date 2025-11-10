@@ -21,14 +21,15 @@ def process_alert_data(data):
     summary = annotations.get('summary', 'No summary available')
     
     # Format the message for Teams (Markdown-friendly)
-    formatted_message = f"""**Alert Name:** {alertname}
+    formatted_message = f"""
+        Alert Name: {alertname}
 
-        **Severity:** {severity}
+        Severity: {severity}
 
-        **Rule Source:** {rule_source}
+        Rule Source: {rule_source}
 
-        **Summary:** {summary}
+        Summary: {summary}
 
-        **Status:** {data.get('status', 'Unknown')}"""
+        Status: {data.get('status', 'Unknown')}"""
     
     return formatted_message

@@ -1,31 +1,64 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
 import AddGroup from "./components/AddGroup";
 import AddMember from "./components/AddMember";
 import MemberList from "./components/MemberList";
 
-const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:6000/api";
+const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showSignup, setShowSignup] = useState(false);
   const [groups, setGroups] = useState([]);
   const [members, setMembers] = useState([]);
 
-  const loadData = async () => {
-    try {
-      // Fetch members (groups not needed since members include "group" name)
-      const membersRes = await fetch(`${API_BASE}/members/`);
-      if (!membersRes.ok) throw new Error("Failed to fetch members");
-      const membersData = await membersRes.json();
-      console.log("Fetched members:", membersData); // Debug: Verify data here
+  // Check if user is already logged in
+  useEffect(() => {
+    // localStorage.setItem("access_token", "demoToken");
+    // TODO:need to check by changing the token
+    const token = localStorage.getItem("access_token");
+    
+    if(token && token !== undefined){
+      setIsAuthenticated(true);
+    }else{
+      setIsAuthenticated(false);
+    }
+  }, []);
 
-      // Group members by "group" name (string)
+  const loadData = async () => {
+    const token = localStorage.getItem("access_token");
+    if (!token || token === undefined) {
+      console.error("No token found");
+      return;
+    }
+
+    try {
+      const membersRes = await fetch(`${API_BASE}/members/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!membersRes.ok) {
+        if (membersRes.status === 401) {
+          handleLogout();
+          return;
+        }
+        throw new Error("Failed to fetch members");
+      }
+
+      const membersData = await membersRes.json();
+      console.log("Fetched members:", membersData);
+
       const groupsMap = {};
       membersData.forEach((m) => {
         const gName = m.group;
         if (gName && !groupsMap[gName]) {
           groupsMap[gName] = {
             group: gName,
-            id: null, // Not used for display; add if you fetch groups later
+            id: null,
             members: [],
           };
         }
@@ -35,8 +68,7 @@ function App() {
       });
 
       const groupedGroups = Object.values(groupsMap);
-      console.log("Grouped groups:", groupedGroups); // Debug: Verify grouping
-
+      console.log("Grouped groups:", groupedGroups);
       setGroups(groupedGroups);
       setMembers(membersData);
     } catch (error) {
@@ -46,14 +78,54 @@ function App() {
   };
 
   useEffect(() => {
-    loadData();
-  }, []);
+    if (isAuthenticated) {
+      loadData();
+    }
+  }, [isAuthenticated]);
+
+  const handleLoginSuccess = () => {
+    setIsAuthenticated(true);
+  };
+
+  const handleSignupSuccess = () => {
+    setShowSignup(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    setIsAuthenticated(false);
+    setGroups([]);
+    setMembers([]);
+  };
 
   const refreshData = () => loadData();
 
+  if (!isAuthenticated) {
+    return (
+      <div className="App">
+        {showSignup ? (
+          <Signup
+            onSignupSuccess={handleSignupSuccess}
+            onSwitchToLogin={() => setShowSignup(false)}
+          />
+        ) : (
+          <Login
+            onLoginSuccess={handleLoginSuccess}
+            onSwitchToSignup={() => setShowSignup(true)}
+          />
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="App">
-      <h1>Groups and Members</h1>
+      <div className="header">
+        <h1>Groups and Members</h1>
+        <button onClick={handleLogout} className="logout-btn">
+          Logout
+        </button>
+      </div>
       <div className="buttons">
         <AddGroup onSuccess={refreshData} />
         <AddMember onSuccess={refreshData} />

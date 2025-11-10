@@ -6,7 +6,6 @@ class Member(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30), nullable=False)
     mail = db.Column(db.String(50), nullable=False, unique=False)
-    # TODO: need to convert this into string (large number throw error)
     m_number = db.Column(db.String(14), nullable=False, unique=False)
     group_id = db.Column(db.Integer, db.ForeignKey('groups.id'), nullable=False)
 
