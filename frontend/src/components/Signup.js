@@ -38,6 +38,7 @@ const Signup = ({ onSignupSuccess, onSwitchToLogin }) => {
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
   // TODO: need to add domain check for email 
+  // TODO: auto login after signup
   const handleSignup = async (e) => {
     e.preventDefault();
     setError("");
