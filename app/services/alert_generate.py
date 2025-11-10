@@ -43,3 +43,28 @@ def send_email_alert(message, recipients):
     except Exception as e:
         print(f"Failed to send email: {e}")
         return False
+
+
+def mail_verify(recipient, code):
+    """Send alert via email using SMTP"""
+    try:
+        subject = "Verification Code from Flask API SigNoz"
+        body = f"Your verification code is {code}"
+
+        # Create the email
+        msg = MIMEText(body, "plain")
+        msg["Subject"] = subject
+        msg["From"] = SENDER_EMAIL
+        msg["To"] = recipient  # visible To header
+
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=10) as server:
+            # Uncomment if authentication required
+            # server.login(os.getenv("SMTP_USER"), os.getenv("SMTP_PASS"))
+            server.sendmail(SENDER_EMAIL, recipient, msg.as_string())
+
+        print(f"Email sent successfully to: {recipient}")
+        return True
+
+    except Exception as e:
+        print(f"Failed to send email: {e}")
+        return False

@@ -1,6 +1,8 @@
+import random
 from flask import Blueprint, request, jsonify
 from app.services.user_services import Userservice
 from app.extensions import bcrypt, redis_client, get_redis
+from app.services.alert_generate import mail_verify
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 auth_bp = Blueprint('auth_bp', __name__)
@@ -13,6 +15,37 @@ def sign_up():
         return jsonify({"error": "give username and password"}), 401
     
     #TODO: check if the user exist
+    verification_code = str(random.randint(100000, 999999))
+    redis_client = get_redis()
+    redis_client.setex(f"verify_{data['mail']}", 300, verification_code)
+
+    success = mail_verify(data['mail'], verification_code)
+
+    if not success:
+        return jsonify({"error": "failed to send verification mail"}), 500
+    return jsonify({
+        "message": "verification code sent to mail"
+    }), 200
+
+
+
+@auth_bp.route('/signup/verify', methods=['POST'])
+def sign_up_verify():
+    data = request.get_json()
+
+    if not data or not data['mail'] or not data['password']:
+        return jsonify({"error": "give username and password"}), 401
+    
+    #TODO: check if the user exist
+
+    if 'verification_code' not in data:
+        return jsonify({"error": "provide verification code"}), 400
+    
+    redis_client = get_redis()
+    stored_code = redis_client.get(f"verify_{data['mail']}")
+
+    if not stored_code or stored_code != data['verification_code']:
+        return jsonify({"error": "invalid or expired verification code"}), 400
     
     new_user = Userservice.create_user(data)
 
@@ -20,6 +53,7 @@ def sign_up():
         "message": "user created successfully",
         "id": new_user.id
     }), 201
+
 
 @auth_bp.route('/get')
 @jwt_required()
