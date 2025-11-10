@@ -4,7 +4,7 @@ from app.blueprints.group_routes import group_bp
 from app.blueprints.groupmember_routes import groupmember_bp
 from app.blueprints.auth_routes import auth_bp
 from flask_cors import CORS
-from app.extensions import db, bcrypt, jwt
+from app.extensions import db, bcrypt, jwt, init_redis
 from config import DevConfig
 
 def create_app(config_class=DevConfig):
@@ -14,6 +14,8 @@ def create_app(config_class=DevConfig):
     db.init_app(app)
     bcrypt.init_app(app)
     jwt.init_app(app)
+    # init_redis(app)
+    
 
     # CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
     CORS(app)

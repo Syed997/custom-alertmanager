@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from app.services.user_services import Userservice
-from app.extensions import bcrypt
+from app.extensions import bcrypt, redis_client, get_redis
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 auth_bp = Blueprint('auth_bp', __name__)
@@ -44,7 +44,22 @@ def login():
     return jsonify({
         "access token": access_token
     }), 201
-    
+
+
+@auth_bp.route('/redis')
+def test_redis():
+    try:
+        redis_client = get_redis()
+        redis_client.setex('test_key', 10, 'Hello, Redis with TTL!')
+        value = redis_client.get('test_key')
+        ttl = redis_client.ttl('test_key')
+        return jsonify({
+            "redis_value": value,
+            "expires_in_seconds": ttl
+        }), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
     
