@@ -37,7 +37,7 @@ const Signup = ({ onSignupSuccess, onSwitchToLogin }) => {
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
-
+  // TODO: need to add domain check for email 
   const handleSignup = async (e) => {
     e.preventDefault();
     setError("");
