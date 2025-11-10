@@ -4,7 +4,7 @@ from app.blueprints.group_routes import group_bp
 from app.blueprints.groupmember_routes import groupmember_bp
 from app.blueprints.auth_routes import auth_bp
 from flask_cors import CORS
-from app.extensions import db, bcrypt, jwt, init_redis
+from app.extensions import db, bcrypt, jwt, init_redis, init_jwt
 from config import DevConfig
 
 def create_app(config_class=DevConfig):
@@ -13,7 +13,8 @@ def create_app(config_class=DevConfig):
     app.config.from_object(config_class)
     db.init_app(app)
     bcrypt.init_app(app)
-    jwt.init_app(app)
+    # jwt.init_app(app)
+    init_jwt(app)
     # init_redis(app)
     
 
