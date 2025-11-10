@@ -38,13 +38,13 @@ def sign_up_verify():
     
     #TODO: check if the user exist
 
-    if 'verification_code' not in data:
+    if 'otp' not in data:
         return jsonify({"error": "provide verification code"}), 400
     
     redis_client = get_redis()
     stored_code = redis_client.get(f"verify_{data['mail']}")
 
-    if not stored_code or stored_code != data['verification_code']:
+    if not stored_code or stored_code != data['otp']:
         return jsonify({"error": "invalid or expired verification code"}), 400
     
     new_user = Userservice.create_user(data)
