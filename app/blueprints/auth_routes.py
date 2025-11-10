@@ -11,6 +11,8 @@ auth_bp = Blueprint('auth_bp', __name__)
 def sign_up():
     data = request.get_json()
 
+    #TODO: need to load the request data into marshmallow to validation check
+
     if not data or not data['mail'] or not data['password']:
         return jsonify({"error": "give username and password"}), 401
     
@@ -47,6 +49,7 @@ def sign_up_verify():
     if not stored_code or stored_code != data['otp']:
         return jsonify({"error": "invalid or expired verification code"}), 400
     
+    #TODO: need to load the request data into marshmallow to validation check
     new_user = Userservice.create_user(data)
 
     return jsonify({
@@ -74,6 +77,10 @@ def login():
         return jsonify({"unautorized": "invalid password"}), 401
     
     access_token = create_access_token(identity=str(user.id))
+
+    #TODO: set the token in redis with expiry
+    #TODO: need to implement logout to delete the token from redis
+    #TODO: need to implement token refresh
 
     return jsonify({
         "access token": access_token

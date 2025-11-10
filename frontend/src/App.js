@@ -16,7 +16,7 @@ function App() {
 
   // Check if user is already logged in
   useEffect(() => {
-    localStorage.setItem("access_token", "demoToken");
+    // localStorage.setItem("access_token", "demoToken");
     // TODO:need to check by changing the token
     const token = localStorage.getItem("access_token");
     

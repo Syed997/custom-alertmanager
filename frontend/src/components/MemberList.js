@@ -11,8 +11,13 @@ const MemberList = ({ groups, onUpdate }) => {
       process.env.REACT_APP_API_BASE || "http://localhost:5000";
 
     try {
+      const token = localStorage.getItem("access_token");
       const res = await fetch(`${API_BASE}/members/${memberId}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
       });
       if (res.ok) {
         alert("Member deleted successfully!");

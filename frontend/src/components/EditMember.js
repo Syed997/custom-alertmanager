@@ -21,9 +21,13 @@ const EditMember = ({ memberId, onSuccess, onCancel }) => {
     if (Object.keys(updateData).length === 0) return;
 
     try {
+      const token = localStorage.getItem("access_token");
       const res = await fetch(`${API_BASE}/members/${memberId}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
         body: JSON.stringify(updateData),
       });
       if (res.ok) {
