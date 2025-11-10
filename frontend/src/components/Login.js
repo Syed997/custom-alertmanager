@@ -27,6 +27,7 @@ const Login = ({ onLoginSuccess, onSwitchToSignup }) => {
       if (res.ok) {
         // Store the access token
         localStorage.setItem("access_token", data["access token"]);
+        // TODO: remove alert make smoother login
         alert("Login successful!");
         onLoginSuccess();
       } else {

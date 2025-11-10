@@ -17,7 +17,9 @@ function App() {
   // Check if user is already logged in
   useEffect(() => {
     // localStorage.setItem("access_token", "demoToken");
-    // TODO:need to check by changing the token
+    // TODO: need to check by changing the token
+    // TODO: auto logout after token expiry
+    // TODO: make the group visible(currently empty group not visible)
     const token = localStorage.getItem("access_token");
     
     if(token && token !== undefined){

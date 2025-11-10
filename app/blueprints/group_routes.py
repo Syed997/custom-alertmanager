@@ -31,7 +31,7 @@ def add_group():
         # db.session.rollback()
         return jsonify({"error": str(e)}), 500
     
-
+# TODO: add delete group route
 
 @group_bp.route('/')
 @jwt_required()
