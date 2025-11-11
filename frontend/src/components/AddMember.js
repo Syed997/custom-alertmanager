@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
 const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
 
@@ -27,7 +28,8 @@ const AddMember = ({ onSuccess }) => {
         const data = await res.json();
         setGroups(data);
       } catch (err) {
-        alert("Error fetching groups: " + err.message);
+        // alert("Error fetching groups: " + err.message);
+        toast.error("Error fetching groups: " + err.message);
       } finally {
         setLoadingGroups(false);
       }
@@ -52,15 +54,18 @@ const AddMember = ({ onSuccess }) => {
       });
 
       if (res.ok) {
-        alert("✅ Member added successfully!");
+        // alert("✅ Member added successfully!");
+        toast.success("Member added successfully!");
         setFormData({ group: "", name: "", mail: "", mobile: "" });
         onSuccess();
       } else {
         const error = await res.json();
-        alert("❌ Error: " + (error.error || "Failed to add member"));
+        // alert("❌ Error: " + (error.error || "Failed to add member"));
+        toast.error("Error: " + (error.error || "Failed to add member"));
       }
     } catch (error) {
-      alert("Error: " + error.message);
+      // alert("Error: " + error.message);
+      toast.error("Error: " + error.message);
     }
   };
 

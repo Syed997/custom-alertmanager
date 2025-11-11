@@ -351,6 +351,36 @@ h1 {
   background: #777;
 }
 
+.Toastify__toast {
+  border-radius: 8px;         /* rounded corners */
+  font-size: 14px;            /* slightly smaller text */
+  padding: 12px 16px;
+}
+
+.Toastify__toast--success {
+  background: #4caf50;       /* green success toast */
+  color: white;
+}
+
+.Toastify__toast--error {
+  background: #f44336;       /* red error toast */
+  color: white;
+}
+
+.Toastify__toast--warning {
+  background: #ff9800;       /* orange warning toast */
+  color: white;
+}
+
+.Toastify__toast--info {
+  background: #2196f3;       /* blue info toast */
+  color: white;
+}
+
+.Toastify__close-button {
+  color: white;              /* make the X button visible */
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .member {

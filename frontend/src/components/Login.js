@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
 
@@ -28,7 +29,8 @@ const Login = ({ onLoginSuccess, onSwitchToSignup }) => {
         // Store the access token
         localStorage.setItem("access_token", data["access token"]);
         // TODO: remove alert make smoother login
-        alert("Login successful!");
+        // alert("Login successful!");
+        toast.success("Login successful!");
         onLoginSuccess();
       } else {
         setError(data.unautorized || data.error || "Login failed");

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
 const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
 
@@ -113,7 +114,8 @@ const Signup = ({ onSignupSuccess, onSwitchToLogin }) => {
       const data = await res.json();
 
       if (res.ok) {
-        alert("Account verified successfully! You can now log in.");
+        // alert("Account verified successfully! You can now log in.");
+        toast.success("Account verified successfully! You can now log in.");
         onSignupSuccess();
       } else {
         setOtpError(data.error || "Invalid or expired OTP");
@@ -142,7 +144,8 @@ const Signup = ({ onSignupSuccess, onSwitchToLogin }) => {
         setCanResend(false);
         setOtp("");
         setOtpError("");
-        alert("New OTP sent to your email!");
+        // alert("New OTP sent to your email!");
+        toast.info("New OTP sent to your email!");
       }
     } catch (error) {
       setOtpError("Failed to resend OTP");
