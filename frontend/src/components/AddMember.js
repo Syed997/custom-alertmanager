@@ -21,7 +21,7 @@ const AddMember = ({ onSuccess }) => {
         const token = localStorage.getItem("access_token");
         const res = await fetch(`${API_BASE}/groups/`, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            "Authorization": `Bearer ${token}`,
           },
         });
         if (!res.ok) throw new Error("Failed to load groups");
