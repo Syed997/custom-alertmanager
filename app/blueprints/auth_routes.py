@@ -16,7 +16,10 @@ def sign_up():
     if not data or not data['mail'] or not data['password']:
         return jsonify({"error": "give username and password"}), 401
     
-    #TODO: check if the user exist
+    user = Userservice.is_userexist(data['mail'])
+    if user:
+        return jsonify({"error": "user exist"}), 401
+    
     verification_code = str(random.randint(100000, 999999))
     redis_client = get_redis()
     redis_client.setex(f"verify_{data['mail']}", 300, verification_code)
