@@ -70,7 +70,17 @@ const Signup = ({ onSignupSuccess, onSwitchToLogin }) => {
         setOtp("");
         setOtpError("");
       } else {
-        setError(data.error || "Signup failed");
+        let errorMessage = "Signup failed";
+
+        if (data.errors) {
+          if (typeof data.errors === "string") {
+            errorMessage = data.errors;
+          } else if (data.errors.mail && data.errors.mail.length > 0) {
+            errorMessage = data.errors.mail[0];  // Get first mail error
+          }
+        }
+        setError(errorMessage);
+        // setError(data.error || "Signup failed");
       }
     } catch (error) {
       setError("Network error: " + error.message);

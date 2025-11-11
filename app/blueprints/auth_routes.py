@@ -1,17 +1,24 @@
 import random
 from flask import Blueprint, request, jsonify
+from app.schemas.user_schemas import UserSignUpSchema
 from app.services.user_services import Userservice
 from app.extensions import bcrypt, redis_client, get_redis
 from app.services.alert_generate import mail_verify
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from marshmallow import ValidationError
 
 auth_bp = Blueprint('auth_bp', __name__)
 
 @auth_bp.route('/signup', methods=['POST'])
 def sign_up():
     data = request.get_json()
+    schema = UserSignUpSchema()
 
-    #TODO: need to load the request data into marshmallow to validation check
+    try:
+        validated_data = schema.load(data)
+    except ValidationError as err:
+        return jsonify({"errors": err.messages}), 400
+
 
     if not data or not data['mail'] or not data['password']:
         return jsonify({"error": "give username and password"}), 401
