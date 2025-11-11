@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
 const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
 
@@ -10,14 +11,35 @@ const AddMember = ({ onSuccess }) => {
     mobile: "",
   });
 
+  const [groups, setGroups] = useState([]);
+  const [loadingGroups, setLoadingGroups] = useState(true);
+
+  // 🔹 Fetch groups when component mounts
+  useEffect(() => {
+    const fetchGroups = async () => {
+      try {
+        const token = localStorage.getItem("access_token");
+        const res = await fetch(`${API_BASE}/groups/`, {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+        if (!res.ok) throw new Error("Failed to load groups");
+        const data = await res.json();
+        setGroups(data);
+      } catch (err) {
+        // alert("Error fetching groups: " + err.message);
+        toast.error("Error fetching groups: " + err.message);
+      } finally {
+        setLoadingGroups(false);
+      }
+    };
+    fetchGroups();
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (
-      !formData.group ||
-      !formData.name ||
-      !formData.mail ||
-      !formData.mobile
-    )
+    if (!formData.group || !formData.name || !formData.mail || !formData.mobile)
       return;
 
     try {
@@ -26,20 +48,24 @@ const AddMember = ({ onSuccess }) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(formData),
       });
+
       if (res.ok) {
-        alert("Member added successfully!");
+        // alert("✅ Member added successfully!");
+        toast.success("Member added successfully!");
         setFormData({ group: "", name: "", mail: "", mobile: "" });
         onSuccess();
       } else {
         const error = await res.json();
-        alert("Error: " + (error.error || "Failed to add member"));
+        // alert("❌ Error: " + (error.error || "Failed to add member"));
+        toast.error("Error: " + (error.error || "Failed to add member"));
       }
     } catch (error) {
-      alert("Error: " + error.message);
+      // alert("Error: " + error.message);
+      toast.error("Error: " + error.message);
     }
   };
 
@@ -52,14 +78,24 @@ const AddMember = ({ onSuccess }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input
-        type="text"
+      {/* Group Dropdown */}
+      <select
         name="group"
-        placeholder="Group Name"
         value={formData.group}
         onChange={handleChange}
         required
-      />
+        disabled={loadingGroups}
+      >
+        <option value="">
+          {loadingGroups ? "Loading groups..." : "Select a group"}
+        </option>
+        {groups.map((g) => (
+          <option key={g.id} value={g.group}>
+            {g.group}
+          </option>
+        ))}
+      </select>
+
       <input
         type="text"
         name="name"
@@ -68,6 +104,7 @@ const AddMember = ({ onSuccess }) => {
         onChange={handleChange}
         required
       />
+
       <input
         type="email"
         name="mail"
@@ -76,6 +113,7 @@ const AddMember = ({ onSuccess }) => {
         onChange={handleChange}
         required
       />
+
       <input
         type="text"
         name="mobile"
@@ -84,6 +122,7 @@ const AddMember = ({ onSuccess }) => {
         onChange={handleChange}
         required
       />
+
       <button type="submit">Add Member</button>
     </form>
   );

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
 const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
 
@@ -70,7 +71,17 @@ const Signup = ({ onSignupSuccess, onSwitchToLogin }) => {
         setOtp("");
         setOtpError("");
       } else {
-        setError(data.error || "Signup failed");
+        let errorMessage = "Signup failed";
+
+        if (data.errors) {
+          if (typeof data.errors === "string") {
+            errorMessage = data.errors;
+          } else if (data.errors.mail && data.errors.mail.length > 0) {
+            errorMessage = data.errors.mail[0];  // Get first mail error
+          }
+        }
+        setError(errorMessage);
+        // setError(data.error || "Signup failed");
       }
     } catch (error) {
       setError("Network error: " + error.message);
@@ -103,7 +114,8 @@ const Signup = ({ onSignupSuccess, onSwitchToLogin }) => {
       const data = await res.json();
 
       if (res.ok) {
-        alert("Account verified successfully! You can now log in.");
+        // alert("Account verified successfully! You can now log in.");
+        toast.success("Account verified successfully! You can now log in.");
         onSignupSuccess();
       } else {
         setOtpError(data.error || "Invalid or expired OTP");
@@ -132,7 +144,8 @@ const Signup = ({ onSignupSuccess, onSwitchToLogin }) => {
         setCanResend(false);
         setOtp("");
         setOtpError("");
-        alert("New OTP sent to your email!");
+        // alert("New OTP sent to your email!");
+        toast.info("New OTP sent to your email!");
       }
     } catch (error) {
       setOtpError("Failed to resend OTP");

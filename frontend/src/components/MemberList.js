@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import EditMember from "./EditMember";
+import { toast } from "react-toastify";
 
 const MemberList = ({ groups, onUpdate }) => {
   const [editingId, setEditingId] = useState(null);
@@ -20,14 +21,17 @@ const MemberList = ({ groups, onUpdate }) => {
         },
       });
       if (res.ok) {
-        alert("Member deleted successfully!");
+        // alert("Member deleted successfully!");
+        toast.success("Member deleted successfully!");
         onUpdate();
       } else {
         const error = await res.json();
-        alert("Error: " + (error.error || "Failed to delete member"));
+        // alert("Error: " + (error.error || "Failed to delete member"));
+        toast.error("Error: " + (error.error || "Failed to delete member"));
       }
     } catch (error) {
-      alert("Error: " + error.message);
+      // alert("Error: " + error.message);
+      toast.error("Error: " + error.message);
     }
   };
 

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 import "./App.css";
+import "react-toastify/dist/ReactToastify.css";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import AddGroup from "./components/AddGroup";
@@ -75,7 +77,8 @@ function App() {
       setMembers(membersData);
     } catch (error) {
       console.error("Error loading data:", error);
-      alert("Error loading data: " + error.message);
+      // alert("Error loading data: " + error.message);
+      toast.error("Error loading data: " + error.message);
     }
   };
 
@@ -131,6 +134,16 @@ function App() {
       <div className="buttons">
         <AddGroup onSuccess={refreshData} />
         <AddMember onSuccess={refreshData} />
+        <ToastContainer
+          position="top-right" // Top-right corner
+          autoClose={5000} // Auto-close after 3s
+          hideProgressBar={false} // Show progress bar
+          newestOnTop
+          closeOnClick={false}
+          pauseOnHover={false}
+          draggable
+          theme="light" // easier to customize colors
+        />
       </div>
       {groups.length === 0 ? (
         <p>No groups or members found. Add some to get started!</p>

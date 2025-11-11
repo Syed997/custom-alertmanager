@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
 
@@ -24,15 +25,18 @@ const AddGroup = ({ onSuccess }) => {
       });
       if (res.ok) {
         // TODO: smoother success notification
-        alert("Group added successfully!");
+        // alert("Group added successfully!");
+        toast.success("Group added successfully!");
         setGroupName("");
         onSuccess();
       } else {
         const error = await res.json();
-        alert("Error: " + (error.error || "Failed to add group"));
+        // alert("Error: " + (error.error || "Failed to add group"));
+        toast.error("Error: " + (error.error || "Failed to add group"));
       }
     } catch (error) {
-      alert("Error: " + error.message);
+      // alert("Error: " + error.message);
+      toast.error("Error: " + error.message);
     }
   };
 
