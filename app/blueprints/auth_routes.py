@@ -47,8 +47,6 @@ def sign_up_verify():
 
     if not data or not data['mail'] or not data['password']:
         return jsonify({"error": "give username and password"}), 401
-    
-    #TODO: check if the user exist
 
     if 'otp' not in data:
         return jsonify({"error": "provide verification code"}), 400
@@ -91,6 +89,7 @@ def login():
     #TODO: set the token in redis with expiry
     #TODO: need to implement logout to delete the token from redis
     #TODO: need to implement token refresh
+    #TODO: implement session based login
 
     return jsonify({
         "access token": access_token

@@ -24,8 +24,6 @@ const AddGroup = ({ onSuccess }) => {
         body: JSON.stringify({ group: groupName }),
       });
       if (res.ok) {
-        // TODO: smoother success notification
-        // alert("Group added successfully!");
         toast.success("Group added successfully!");
         setGroupName("");
         onSuccess();
