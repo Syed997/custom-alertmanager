@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from app.utils.data_process import process_alert_data
-from app.services.alert_generate import send_teams_alert, send_email_alert
+from app.services.alert_generate import send_teams_alert, send_email_alert, send_sms_alert
 import json
 from app.services.group_services import Groupservice
 from app.services.member_services import Memberservices
@@ -57,10 +57,21 @@ def alert(group):
     else:
         print("No JSON data received – check Content-Type header.")
         alert_message = 'No data provided'
-    
-    success = send_email_alert(alert_message, mails)
 
-    if success:
-        return jsonify({"status": "success", "message": "Alert sent to Mails"}), 200
-    else:
-        return jsonify({"status": "error", "message": "Failed to send alert"}), 500
+        email_success = send_email_alert(alert_message, mails)
+        sms_success = send_sms_alert(numbers, alert_message)
+
+        if email_success and sms_success:
+            return jsonify({"status": "success", "message": "Alert sent via Email and SMS"}), 200
+        elif email_success:
+            return jsonify({"status": "partial", "message": "Email sent but SMS failed"}), 207
+        elif sms_success:
+            return jsonify({"status": "partial", "message": "SMS sent but Email failed"}), 207
+        else:
+            return jsonify({"status": "error", "message": "Failed to send Email and SMS"}), 500 
+    # success = send_email_alert(alert_message, mails)
+
+    # if success:
+    #     return jsonify({"status": "success", "message": "Alert sent to Mails"}), 200
+    # else:
+    #     return jsonify({"status": "error", "message": "Failed to send alert"}), 500
