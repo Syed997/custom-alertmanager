@@ -20,7 +20,6 @@ def alert_teams():
         print(json.dumps(data, indent=2))
         print("-" * 50)
         
-        # Process the data and generate the alert message
         alert_message = process_alert_data(data)
         
     else:
@@ -43,7 +42,7 @@ def alert(group):
         return jsonify({"error": "group does not exist."}), 400
     
     mails = Memberservices.get_mail(group_id)
-    # numbers = Memberservices.get_number(group_id)
+    numbers = Memberservices.get_number(group_id)
 
     data = request.get_json()
     if data:

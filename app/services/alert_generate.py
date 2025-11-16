@@ -124,14 +124,14 @@ def send_sms_alert(receivers, message):
             response = requests.post(url, headers=headers, json=payload, timeout=10)
 
             if response.status_code in (200, 201):
-                print(f"📨 SMS sent successfully to {receiver}")
+                print(f"SMS sent successfully to {receiver}")
             else:
-                print(f"❌ Failed to send SMS to {receiver} ({response.status_code})")
+                print(f"Failed to send SMS to {receiver} ({response.status_code})")
                 print(response.text)
                 success = False
 
         except Exception as e:
-            print(f"❌ Exception sending SMS to {receiver}: {e}")
+            print(f"Exception sending SMS to {receiver}: {e}")
             success = False
 
     return success
