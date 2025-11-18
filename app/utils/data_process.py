@@ -22,14 +22,10 @@ def process_alert_data(data):
     
     # Format the message for Teams (Markdown-friendly)
     formatted_message = f"""
-        Alert Name: {alertname}
-
-        Severity: {severity}
-
-        Rule Source: {rule_source}
-
-        Summary: {summary}
-
-        Status: {data.get('status', 'Unknown')}"""
+    Alert Name: {alertname}
+    Severity: {severity}
+    Rule Source: {rule_source}
+    Summary: {summary}
+    Status: {data.get('status', 'Unknown')}"""
     
     return formatted_message
