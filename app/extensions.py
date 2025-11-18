@@ -4,11 +4,13 @@ from flask_jwt_extended import JWTManager
 import redis
 from flask import current_app, jsonify
 from redis import StrictRedis
+from flask_migrate import Migrate
 
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 jwt = JWTManager()
+migrate = Migrate()
 redis_client = None
 
 def init_jwt(app):

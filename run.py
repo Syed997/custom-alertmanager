@@ -8,10 +8,10 @@ if __name__ == '__main__':
 
         try:
             db.engine.connect()
-            print("✅ DB connection OK!")
+            print("DB connection OK!")
             
         except Exception as e:
-            print("❌ DB connection failed:", e)
-        db.drop_all()
-        db.create_all()
+            print("DB connection failed:", e)
+        # db.drop_all()
+        # db.create_all()
     app.run(host='0.0.0.0', port=5000, debug=True)

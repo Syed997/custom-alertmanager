@@ -6,12 +6,14 @@ from app.blueprints.auth_routes import auth_bp
 from flask_cors import CORS
 from app.extensions import db, bcrypt, jwt, init_redis, init_jwt
 from config import DevConfig
+from app.extensions import db, migrate
 
 def create_app(config_class=DevConfig):
     app = Flask(__name__)
 
     app.config.from_object(config_class)
     db.init_app(app)
+    migrate.init_app(app, db)
     bcrypt.init_app(app)
     # jwt.init_app(app)
     init_jwt(app)
