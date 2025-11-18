@@ -1,3 +1,5 @@
+import textwrap
+
 def process_alert_data(data):
     """
     Process the AlertManager payload and extract key fields:
@@ -21,11 +23,12 @@ def process_alert_data(data):
     summary = annotations.get('summary', 'No summary available')
     
     # Format the message for Teams (Markdown-friendly)
-    formatted_message = f"""
-    Alert Name: {alertname}
-    Severity: {severity}
-    Rule Source: {rule_source}
-    Summary: {summary}
-    Status: {data.get('status', 'Unknown')}"""
-    
+    formatted_message = textwrap.dedent(f"""\
+        Alert Name   : {alertname}
+        Severity     : {severity}
+        Rule Source  : {rule_source}
+        Summary      : {summary}
+        Status       : {data.get('status', 'Unknown')}
+    """).strip()
+
     return formatted_message
