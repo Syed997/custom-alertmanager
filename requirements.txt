@@ -9,3 +9,4 @@ redis
 marshmallow
 flask-migrate
 gunicorn
+flask_cors

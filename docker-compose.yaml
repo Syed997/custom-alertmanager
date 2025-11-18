@@ -2,6 +2,24 @@ version: '3.8'
 
 services:
 
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network  
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    ports:
+      - "5000:5000"
+    networks:
+      - app-network  
   frontend:
     build:
       context: ./frontend
@@ -16,14 +34,24 @@ services:
       - app-network
   db:
     image: postgres:16
-    container_name: smart_url_db
+    # container_name: smart_url_db
     environment:
       POSTGRES_DB: alert-manager
       POSTGRES_USER: jim
       POSTGRES_PASSWORD: jim
     ports:
       - "5432:5432"  # Map host port 5432 to container port 5432
+    networks:
+      - app-network
 
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog
+    ports:
+      - "8025:8025"  # Web UI
+      - "1025:1025"
+    networks:
+      - app-network
 
 networks:
   app-network:
